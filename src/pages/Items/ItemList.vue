@@ -1,6 +1,6 @@
 <template>
-  <div class="tabla-personajes">
-    <table id="personajes" class="custom table-striped table-dark">
+  <div class="tabla-items">
+    <table id="items" class="custom table-striped table-dark">
       <thead>
         <tr>
           <td align="center">ID</td>
@@ -10,7 +10,11 @@
           <td align="center">Precio</td>
           <td align="center">Fecha de Creacion</td>
           <td align="center">Creador</td>
-          <td align="center"><b-button variant="warning">d</b-button></td>
+          <td align="center">
+            <router-link class="btn btn-warning" to="/items/new"
+              >Nuevo</router-link
+            >
+          </td>
         </tr>
       </thead>
       <tbody>
@@ -23,8 +27,14 @@
           <td align="center">{{ item.creation_date }}</td>
           <td align="center">{{ item.creation_user.username }}</td>
           <td align="center">
-            <b-button variant="primary">d</b-button>
-            <b-button variant="danger">d</b-button>
+            <router-link
+              class="btn btn-primary"
+              :to="`/items/view/${item.id_item}`"
+              >Detalles</router-link
+            >
+            <b-button variant="danger" v-on:click="changeState(item.id_item)"
+              >Desactivar</b-button
+            >
           </td>
         </tr>
       </tbody>
@@ -35,9 +45,10 @@
 import http from "../../http-common";
 
 export default {
-  name: "personajes-list",
+  name: "items-list",
   data() {
     return {
+      item: [],
       items: []
     };
   },
@@ -53,6 +64,22 @@ export default {
           console.log(e);
         });
     },
+    changeState(id) {
+      http
+        .get("/items/view/" + id)
+        .then(response => {
+          this.item = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+        if(this.item.state == 1){
+          this.item.state == 0;
+        }else{
+          this.item.state == 1;
+
+        }
+    },
     /* eslint-enable no-console */
     getState(estado) {
       if (estado == 1) {
@@ -61,6 +88,9 @@ export default {
       return "Inactivo";
     }
   },
+  computed: {
+
+  },
 
   mounted() {
     this.retrieveItems();
@@ -68,6 +98,21 @@ export default {
 };
 </script>
 <style>
+.btn-danger {
+  background: rgb(255, 0, 0) !important;
+  border-color: black !important;
+  color: black !important;
+}
+.btn-warning {
+  background: rgb(1, 255, 14) !important;
+  border-color: black !important;
+  color: black !important;
+}
+.btn-primary {
+  background: rgb(26, 1, 255) !important;
+  border-color: black !important;
+  color: black !important;
+}
 .font-title-ds {
   font-family: "DS-Title", cursive;
   font-size: 70px;
@@ -76,7 +121,7 @@ export default {
   font-family: "DS-Title";
   src: url("../../assets/fonts/OptimusPrinceps.ttf");
 }
-.tabla-personajes {
+.tabla-items {
   color: white;
   width: 90%;
   margin: 0 auto;

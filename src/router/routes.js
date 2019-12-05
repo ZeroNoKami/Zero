@@ -6,8 +6,8 @@ import NotFound from "@/pages/NotFoundPage.vue";
 import Icons from "@/pages/Icons.vue";
 import ItemList from "@/pages/Items/ItemList.vue";
 import ItemDetail from "@/pages/Items/ItemDetail.vue";
+import AddItem from "@/pages/Items/AddItem.vue";
 import SupplierList from "@/pages/Suppliers/SupplierList.vue";
-import SupplierDetail from "@/pages/Suppliers/SupplierDetail.vue";
 import Home from "@/pages/home.vue";
 
 const routes = [
@@ -27,30 +27,26 @@ const routes = [
         component: Icons
       },
       {
-        path: "items",
-        name: "items",
-        component: ItemList,
-        children: [
-          {
-            path: "/items/view/:id",
-            name: "items-details",
-            component: ItemDetail,
-            props: true
-          }
-        ]
+        path: "/items",
+        name: "Productos",
+        component: ItemList
       },
       {
-        path: "suppliers",
-        name: "suppliers",
-        component: SupplierList,
-        children: [
-          {
-            path: "/supplier/view/:id",
-            name: "supplier-details",
-            component: SupplierDetail,
-            props: true
-          }
-        ]
+        path: "/items/new",
+        name: "Nuevo Producto",
+        component: AddItem,
+        props: true
+      },
+      {
+        path: "/items/view/:id",
+        name: "Detalle de producto",
+        component: ItemDetail,
+        props: true
+      },
+      {
+        path: "/suppliers",
+        name: "Proveedores",
+        component: SupplierList
       }
     ]
   },

@@ -12,7 +12,7 @@
           ><p>{{ name }}</p></i
         >
         <p v-else>
-        <span class="pad-sidebar">{{ name }}</span>
+          <span class="pad-sidebar">{{ name }}</span>
         </p>
       </slot>
     </a>
