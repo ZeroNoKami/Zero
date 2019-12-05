@@ -73,12 +73,11 @@ export default {
         .catch(e => {
           console.log(e);
         });
-        if(this.item.state == 1){
-          this.item.state == 0;
-        }else{
-          this.item.state == 1;
-
-        }
+      if (this.item.state == 1) {
+        this.item.state == 0;
+      } else {
+        this.item.state == 1;
+      }
     },
     /* eslint-enable no-console */
     getState(estado) {
@@ -88,9 +87,7 @@ export default {
       return "Inactivo";
     }
   },
-  computed: {
-
-  },
+  computed: {},
 
   mounted() {
     this.retrieveItems();

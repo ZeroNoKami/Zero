@@ -78,10 +78,8 @@
   font-size: 10px;
 }
 .font-grand-title {
-  
   font-family: "DS-Title", cursive;
   font-size: 80px;
-  
 }
 
 @font-face {
