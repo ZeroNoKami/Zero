@@ -7,6 +7,7 @@ import Icons from "@/pages/Icons.vue";
 import ItemList from "@/pages/Items/ItemList.vue";
 import ItemDetail from "@/pages/Items/ItemDetail.vue";
 import AddItem from "@/pages/Items/AddItem.vue";
+import ItemEdit from "@/pages/Items/ItemEdit.vue";
 import SupplierList from "@/pages/Suppliers/SupplierList.vue";
 import Home from "@/pages/home.vue";
 
@@ -35,6 +36,12 @@ const routes = [
         path: "/items/new",
         name: "Nuevo Producto",
         component: AddItem,
+        props: true
+      },
+      {
+        path: "/items/edit/:id",
+        name: "Modificar Producto",
+        component: ItemEdit,
         props: true
       },
       {

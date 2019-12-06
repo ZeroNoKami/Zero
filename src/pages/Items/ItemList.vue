@@ -24,15 +24,21 @@
           <td align="center">{{ item.supplier.name_supplier }}</td>
           <td align="center">{{ getState(item.state) }}</td>
           <td align="center">{{ item.price }}</td>
-          <td align="center">{{ item.creation_date }}</td>
+          <td align="center">
+            {{ moment(item.creation_date).format("YYYY-MM-DD") }}
+          </td>
           <td align="center">{{ item.creation_user.username }}</td>
           <td align="center">
             <router-link
+              :ref="'det-' + item.id_item"
               class="btn btn-primary"
               :to="`/items/view/${item.id_item}`"
               >Detalles</router-link
             >
-            <b-button variant="danger" v-on:click="changeState(item.id_item)"
+            <b-button
+              variant="danger"
+              :ref="'des-' + item.id_item"
+              v-on:click="updateActive(item.id_item, item.state)"
               >Desactivar</b-button
             >
           </td>
@@ -64,20 +70,17 @@ export default {
           console.log(e);
         });
     },
-    changeState(id) {
+    updateActive(id, state) {
+      console.log("id: " + id + "    state: " + state);
       http
-        .get("/items/view/" + id)
+        .put("items/deactiState/" + id + "/" + state)
         .then(response => {
-          this.item = response.data;
+          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-      if (this.item.state == 1) {
-        this.item.state == 0;
-      } else {
-        this.item.state == 1;
-      }
+      location.reload();
     },
     /* eslint-enable no-console */
     getState(estado) {
@@ -87,8 +90,6 @@ export default {
       return "Inactivo";
     }
   },
-  computed: {},
-
   mounted() {
     this.retrieveItems();
   }

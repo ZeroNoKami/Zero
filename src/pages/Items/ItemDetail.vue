@@ -22,7 +22,7 @@
             <h2>
               Precio
             </h2>
-            <p>
+            <p id="priceDetail">
               {{ item.price }} € <br />
               {{ getPercent(item.price, item.price_reduccion.reduced_percent) }}
             </p>
@@ -45,21 +45,29 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6 diseño-grid">
+        <div class="col-md-4 diseño-grid">
           <h2>
             Fecha de creación
           </h2>
           <p>
-            {{ this.item.creation_date }}
+            {{ moment(this.item.creation_date).format("YYYY-MM-DD") }}
           </p>
         </div>
-        <div class="col-md-6 diseño-grid">
+        <div class="col-md-4 diseño-grid">
           <h2>
             Usuario del creador
           </h2>
           <p>
             {{ this.item.creation_user.username }}
           </p>
+        </div>
+        <div class="col-md-4 diseño-grid">
+          <router-link class="btn btn-edit" :to="`/items/edit/${item.id_item}`"
+            >Editar</router-link
+          >
+          <button v-on:click="returnList" class="btn  btn-return">
+            Volver
+          </button>
         </div>
       </div>
     </div>
@@ -68,6 +76,21 @@
 <style>
 .border-style {
   border-block-style: groove;
+}
+
+.btn-edit {
+  background: #fffb03 !important;
+  border-color: black !important;
+  color: black !important;
+  top: 34%;
+  width: 100%;
+}
+.btn-return {
+  background: #0fb900 !important;
+  border-color: black !important;
+  color: black !important;
+  top: 34%;
+  width: 100%;
 }
 
 .img-principal {
@@ -116,6 +139,12 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    redirectEdit(id) {
+      window.location.href = "#/item/Edit/" + id;
+    },
+    returnList() {
+      window.location.href = "#/items";
     },
     /* eslint-enable no-console */
     getState(estado) {

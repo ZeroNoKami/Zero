@@ -1,8 +1,20 @@
 <template>
   <div class="newItemform">
-    <div v-if="!submitted">
+    <div v-if="this.item" class="detalles-item">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-1">
+          <div class="form-group">
+            <h3><label for="name_item" class="detalles-item">id</label></h3>
+            <input
+              disabled
+              type="text"
+              class="form-control"
+              id="id_item"
+              v-model="item.id_item"
+            />
+          </div>
+        </div>
+        <div class="col-md-auto">
           <div class="form-group">
             <h3><label for="name_item" class="detalles-item">Nombre</label></h3>
             <input
@@ -15,11 +27,11 @@
             />
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-auto">
           <div class="form-group">
             <h3><label for="price" class="detalles-item">Precio</label></h3>
             <input
-              type="text"
+              type="number"
               class="form-control"
               id="price"
               required
@@ -28,7 +40,6 @@
             />
           </div>
         </div>
-        <div class="col-md-3"></div>
       </div>
       <div class="row">
         <div class="col-md-8">
@@ -46,8 +57,8 @@
             </b-form-textarea>
           </div>
         </div>
-        <div class="col-md-2">
-          <button v-on:click="saveItem" class="btn btn-success">
+        <div class="col-md-4">
+          <button v-on:click="saveItem" class="btn btn-edit-fn">
             Aceptar
           </button>
         </div>
@@ -55,62 +66,59 @@
     </div>
   </div>
 </template>
-<style>
-.btn-success {
-  background: #0fb900 !important;
-  border-color: black !important;
-  position: absolute;
-  top: 160px;
-  width: 100%;
-}
-.newItemform {
-  max-width: 100%;
-  margin: auto;
-}
-.drpdwm-md {
-  position: absolute !important;
-  left: 65px;
-}
-</style>
 <script>
 import http from "../../http-common";
 
 export default {
-  name: "items-add",
+  name: "items-edit",
   data() {
     return {
-      item: {
-        id_item: 0,
-        name_item: "",
-        description: "",
-        price: 0,
-        state: 1
-      },
-      submitted: false
+      item: []
     };
   },
   methods: {
     /* eslint-disable no-console */
-    saveItem() {
-      var data = {
-        name_item: this.item.name_item,
-        description: this.item.description,
-        price: this.item.price,
-        state: this.item.state
-      };
+    retrieveItem() {
+      var ide = this.$route.params.id;
       http
-        .post("/items/new", data)
+        .get("/items/view/" + ide)
         .then(response => {
-          this.item.id_item = response.data.id;
+          this.item = response.data;
         })
         .catch(e => {
           console.log(e);
         });
+    },
+    saveItem() {
+      var data = this.item;
       console.log(data);
-      this.submitted = true;
-      window.location.href = "#/items";
+      http
+        .put("/items/edit/" + this.item.id_item, data)
+        .then(response => {
+          this.item.id_item = response.data.id;
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      this.returnList(this.item.id_item);
+    },
+    returnList(id) {
+      window.location.href = "#/items/view/" + id;
     }
     /* eslint-enable no-console */
+  },
+  mounted() {
+    this.retrieveItem();
   }
 };
 </script>
+<style>
+.btn-edit-fn {
+  background: #0fb900 !important;
+  border-color: black !important;
+  position: absolute;
+  top: 160px;
+  width: 94%;
+}
+</style>
