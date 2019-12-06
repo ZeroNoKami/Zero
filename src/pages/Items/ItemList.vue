@@ -54,7 +54,6 @@ export default {
   name: "items-list",
   data() {
     return {
-      item: [],
       items: []
     };
   },
